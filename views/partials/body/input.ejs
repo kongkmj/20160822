@@ -1,0 +1,298 @@
+<div id="page-wrapper">
+
+  <!-- Page Heading -->
+          <div class="row">
+              <div class="col-lg-12">
+                  <h1 class="page-header">
+                      <b>감지기 설정</b>
+                  </h1>
+                  <ol class="breadcrumb">
+                      <li class="active">
+                          <i class="fa fa-gaer"></i> 설정
+                      </li>
+                  </ol>
+              </div>
+          </div>
+<div >
+<h5><b>(1)번 감지기</b></h5>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<form id="standardform1" name="standardform1" method="POST" action="/input1">
+<h5>세팅:
+<input type ="button"  id="ruleid1" name="ruleid1" value="적용" onclick="stsubmit1()"/>
+
+<i class=" fa fa-long-arrow-right"></i>
+<script>
+var socket = io.connect("http://localhost");
+function stsubmit1() {
+  socket.emit('std1');
+}
+
+socket.on('luck1',function () {
+    standardform1.submit();
+});
+
+</script>
+</form>
+
+<% if(data_1.rule001x!=undefined) {%>
+<%= 'X = '+ (data_1.rule001x-90) %>
+<%}%>
+<% if(data_1.rule001y!=undefined) {%>
+<%= 'Y = '+ (data_1.rule001y-90) %>
+<%}%>
+</h5>
+<div id="test">
+
+</div>
+
+<div class="form-group">
+
+  <div>
+    <h5>
+      <form id="ruleform1" name="ruleform1" method="POST" action="/input1">
+      민감도 :
+      <input type ="text"  id="range1" name="range1" value=""placeholder="<%=data_1.range001%>
+      "/>
+      <button id="std1">적용 </button>
+    </div>
+    </h5>
+  <script>
+  var socket = io.connect("http://localhost");
+
+  $('#std1').click(function () {
+      ruleform1.submit();
+  })
+
+
+  </script>
+  </form>
+
+
+    </div>
+  </div>
+
+  <div >
+    <h5><b>(2)번 감지기</b></h5>
+
+    <form id="standardform2" name="standardform2" method="POST" action="/input2">
+    <h5>세팅:
+    <input type ="button"  id="ruleid2" name="ruleid2" value="적용" onclick="stsubmit2()"/>
+    <i class=" fa fa-long-arrow-right"></i>
+    <script>
+    var socket = io.connect("http://localhost");
+    function stsubmit2() {
+      socket.emit('std2');
+    }
+
+    socket.on('luck2',function () {
+        standardform2.submit();
+    });
+
+    </script>
+    </form>
+    <% if(data_2.rule002x!=undefined) {%>
+    <%= 'X = '+ (data_2.rule002x-90) %>
+    <%}%>
+    <% if(data_2.rule002y!=undefined) {%>
+    <%= 'Y = '+ (data_2.rule002y-90) %>
+    <%}%>
+    </h5>
+    <div id="test">
+
+    </div>
+
+    <div class="form-group">
+
+      <div>
+        <h5>
+          <form id="ruleform2" name="ruleform2" method="POST" action="/input2">
+          민감도 :
+          <input type ="text"  id="range2" name="range2" value="" placeholder="<%=data_2.range002%>
+          "/>
+          <button id="std2">적용 </button>
+        </div>
+        </h5>
+        <script>
+        var socket = io.connect("http://localhost");
+        $('#std2').click(function () {
+            ruleform2.submit();
+        })
+        </script>
+        </form>
+
+
+      </div>
+    </div>
+
+
+    <div >
+      <h5><b>(3)번 감지기</b></h5>
+
+      <form id="standardform3" name="standardform3" method="POST" action="/input3">
+      <h5>세팅:
+      <input type ="button" id="ruleid3" name="ruleid3" value="적용" onclick="stsubmit3()"/>
+      <i class=" fa fa-long-arrow-right"></i>
+      <script>
+      var socket = io.connect("http://localhost");
+      function stsubmit3() {
+        socket.emit('std3');
+      }
+
+      socket.on('luck3',function () {
+          standardform3.submit();
+      });
+
+      </script>
+      </form>
+      <% if(data_3.rule003x!=undefined) {%>
+      <%= 'X = '+(data_3.rule003x-90) %>
+      <%}%>
+      <% if(data_3.rule003y!=undefined) {%>
+      <%= 'Y = '+(data_3.rule003y-90) %>
+      <%}%>
+      </h5>
+      <div id="test">
+
+      </div>
+
+      <div class="form-group">
+
+        <div>
+          <h5>
+            <form id="ruleform3" name="ruleform3" method="POST" action="/input3">
+            민감도 :
+            <input type ="text"  id="range3" name="range3" value="" placeholder="<%=data_3.range003%>
+            "/>
+            <button id="std3">적용 </button>
+          </div>
+          </h5>
+          <script>
+          var socket = io.connect("http://localhost");
+          $('#std3').click(function () {
+              ruleform3.submit();
+          })
+          </script>
+          </form>
+
+
+        </div>
+      </div>
+
+
+
+      <div >
+      <h5><b>(4)번 감지기</b></h5>
+
+      <form id="standardform4" name="standardform4" method="POST" action="/input4">
+      <h5>세팅:
+      <input type ="button"  id="ruleid4" name="ruleid4" value="적용" onclick="stsubmit4()"/>
+      <i class=" fa fa-long-arrow-right"></i>
+      <script>
+      var socket = io.connect("http://localhost");
+      function stsubmit4() {
+        socket.emit('std4');
+      }
+
+      socket.on('luck4',function () {
+          standardform4.submit();
+      });
+
+      </script>
+      </form>
+      <% if(data_4.rule004x!=undefined) {%>
+      <%= 'X = '+(data_4.rule004x-90) %>
+      <%}%>
+      <% if(data_4.rule004y!=undefined) {%>
+      <%= 'Y = '+(data_4.rule004y-90) %>
+      <%}%>
+      </h5>
+      <div id="test">
+
+      </div>
+
+      <div class="form-group">
+
+        <div>
+          <h5>
+            <form id="ruleform4" name="ruleform4" method="POST" action="/input4">
+            민감도 :
+            <input type ="text"  id="range4" name="range4" value=""placeholder="<%=data_4.range004%>
+            "/>
+            <button id="std4">적용 </button>
+          </div>
+          </h5>
+          <script>
+          $('#std4').click(function () {
+              ruleform4.submit();
+          })
+          </script>
+          </form>
+
+
+          </div>
+        </div>
+
+
+        <div >
+        <h5><b>(5)번 감지기</b></h5>
+
+        <form id="standardform5" name="standardform5" method="POST" action="/input5">
+        <h5>세팅:
+        <input type ="button"  id="ruleid5" name="ruleid5" value="적용" onclick="stsubmit5()"/>
+        <i class=" fa fa-long-arrow-right"></i>
+        <script>
+        var socket = io.connect("http://localhost");
+        function stsubmit5() {
+          socket.emit('std5');
+        }
+
+        socket.on('luck5',function () {
+            standardform5.submit();
+        });
+
+        </script>
+        </form>
+        <% if(data_5.rule005x!=undefined) {%>
+        <%= 'X = '+(data_5.rule005x-90) %>
+        <%}%>
+        <% if(data_5.rule005y!=undefined) {%>
+        <%= 'Y = '+(data_5.rule005y-90) %>
+        <%}%>
+        </h5>
+        <div id="test">
+
+        </div>
+
+        <div class="form-group">
+
+          <div>
+            <h5>
+              <form id="ruleform5" name="ruleform5" method="POST" action="/input5">
+              민감도 :
+              <input type ="text"  id="range5" name="range5" value="" placeholder="<%=data_5.range005%>
+              "/>
+              <button id="std5">적용 </button>
+            </div>
+            </h5>
+            <script>
+            var socket = io.connect("http://localhost");
+            $('#std5').click(function () {
+                ruleform5.submit();
+            })
+
+            </script>
+            </form>
+
+            </div>
+          </div>
+
+
+
+
+
+
+<!-- /#page-wrapper -->
+</div>

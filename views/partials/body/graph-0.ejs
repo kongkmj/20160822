@@ -1,0 +1,820 @@
+<div id="page-wrapper">
+
+  <!-- Page Heading -->
+          <div class="row">
+              <div class="col-lg-8" >
+                  <h2 class="page-header" >
+
+
+                  </h2>
+
+                  <ol class="breadcrumb">
+                      <li class="active">
+                          <i class="fa fa-road"></i> 정보
+                      </li>
+                  </ol>
+              </div>
+              <div class="col-lg-2" style="padding-top:3%">
+              <div id="color" class="panel panel-green">
+                  <div class="panel-heading">
+                      <div class="row">
+                          <div class="col-xs-3">
+                            <div id ="emoticon">
+                              <i class="fa fa-smile-o fa-3x"></i>
+                          </div>
+                        </div>
+                          <div class="col-xs-9 text-center">
+                              <div id="text"class="huge1">양호</div>
+                              <div></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <a id="#" style="cursor:pointer;">
+                      <div class="panel-footer">
+                          <span id="test7" class="pull-left"></span>
+			  <span class = "pull-right">&nbsp;</span>
+                          <div id="help"class="clearfix"></div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+		<div class="col-lg-2" style="padding-top:3%">
+            <div id="audiocolor" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                          <div id ="audioplay">
+                            <i class="fa fa-play fa-3x"></i>
+                        </div>
+                      </div>
+                        <div class="col-xs-6 text-right">
+                            <div id="audiotext"class="huge3">ON</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a id="BTN" style="cursor:pointer;">
+                    <div class="panel-footer">
+                        <span id="test7" class="pull-left"></span>
+                        <span class="pull-right"></span>
+                        <div id="audiobutton"class="clearfix">멈춤</div>
+                    </div>
+                </a>
+            </div>
+
+          </div>
+          </div>
+<canvas id="canvas" width="50%" height="10%";></canvas>
+<canvas id="canvas2" width="50%" height="10%";></canvas>
+<br>
+<br>
+
+<button id ="interval1">10 초</button>
+<button id ="interval2">1시간</button>
+<button id ="interval3">6시간</button>
+<button id ="interval4">12시간</button>
+<button id ="interval5">24시간</button>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+var settingdata1x = parseInt("<%=(data1.rule001x)%>");
+var settingdata1y = parseInt("<%=(data1.rule001y)%>");
+
+var settingdata2x = parseInt("<%=(data2.rule002x)%>");
+var settingdata2y = parseInt("<%=(data2.rule002y)%>");
+
+var settingdata3x = parseInt("<%=(data3.rule003x)%>");
+var settingdata3y = parseInt("<%=(data3.rule003y)%>");
+
+var settingdata4x = parseInt("<%=(data4.rule004x)%>");
+var settingdata4y = parseInt("<%=(data4.rule004y)%>");
+
+var settingdata5x = parseInt("<%=(data5.rule005x)%>");
+var settingdata5y = parseInt("<%=(data5.rule005y)%>");
+
+
+var socket = io.connect("http://localhost");
+var audio = new Audio();
+audio.src='/audio/alert.mp3';
+var alert_cnt=0;
+audio.loop=true;
+var audio_cnt=0;
+
+
+// alaram
+var color = $("#color");
+var emoticon =$("#emoticon i");
+var size = $("#size");
+var text1 = $("#text");
+var alaram1 = $("#help");
+
+//audio
+var audiocolor= $("#audiocolor");
+var audioicon = $("#audioplay i");
+var audiotext = $("#audiotext");
+var audiobutton = $("#audiobutton");
+
+
+
+///@@@@@@@@@여기야
+
+var message;
+$('#interval1').click(function () {
+  message="001";
+  socket.emit('intervalEV',message);
+});
+
+$('#interval2').click(function () {
+  message="002";
+  socket.emit('intervalEV',message);
+});
+$('#interval3').click(function () {
+  message="003";
+  socket.emit('intervalEV',message);
+});
+$('#interval4').click(function () {
+  message="004";
+  socket.emit('intervalEV',message);
+});
+$('#interval5').click(function () {
+  message="005";
+  socket.emit('intervalEV',message);
+});
+
+//////////여기야
+
+
+
+
+socket.on('news',function (alaram,dbprevData) {
+//console.log(dbprevData[19]);
+  for(var i=0;i<20;i++){
+    //roll
+    config1.data.labels[i]=(dbprevData[i].rectime);
+    if((dbprevData[i].beacon001x-settingdata1x)>90){
+      config1.data.datasets[0].data[i]=90;
+    }
+    else if((dbprevData[i].beacon001x-settingdata1x)<-90){
+      config1.data.datasets[0].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[0].data[i]=(dbprevData[i].beacon001x-settingdata1x);
+    }
+
+    if((dbprevData[i].beacon002x-settingdata2x)>90){
+      config1.data.datasets[1].data[i]=90;
+    }
+    else if((dbprevData[i].beacon002x-settingdata2x)<-90){
+      config1.data.datasets[1].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[1].data[i]=(dbprevData[i].beacon002x-settingdata2x);
+    }
+
+    if((dbprevData[i].beacon003x-settingdata3x)>90){
+      config1.data.datasets[2].data[i]=90;
+    }
+    else if((dbprevData[i].beacon003x-settingdata3x)<-90){
+      config1.data.datasets[2].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[3].data[i]=(dbprevData[i].beacon004x-settingdata4x);
+    }
+    if((dbprevData[i].beacon004x-settingdata4x)>90){
+      config1.data.datasets[3].data[i]=90;
+    }
+    else if((dbprevData[i].beacon004x-settingdata4x)<-90){
+      config1.data.datasets[3].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[3].data[i]=(dbprevData[i].beacon004x-settingdata4x);
+    }
+    if((dbprevData[i].beacon005x-settingdata5x)>90){
+      config1.data.datasets[4].data[i]=90;
+    }
+    else if((dbprevData[i].beacon005x-settingdata5x)<-90){
+      config1.data.datasets[4].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[4].data[i]=(dbprevData[i].beacon005x-settingdata5x);
+    }
+
+    //pitch
+    config2.data.labels[i]=(dbprevData[i].rectime);
+    if((dbprevData[i].beacon001y-settingdata1y)>90){
+      config2.data.datasets[0].data[i]=90;
+    }
+    else if((dbprevData[i].beacon001y-settingdata1y)<-90){
+      config2.data.datasets[0].data[i]=-90;
+    }
+    else{
+     config2.data.datasets[0].data[i]=(dbprevData[i].beacon001y-settingdata1y);
+    }
+
+    if((dbprevData[i].beacon002y-settingdata2y)>90){
+      config2.data.datasets[1].data[i]=90;
+    }
+    else if((dbprevData[i].beacon002y-settingdata2y)<-90){
+      config2.data.datasets[1].data[i]=-90;
+    }
+    else{
+     config2.data.datasets[1].data[i]=(dbprevData[i].beacon002y-settingdata2y);
+    }
+
+
+    if((dbprevData[i].beacon003y-settingdata3y)>90){
+      config2.data.datasets[2].data[i]=90;
+    }
+    else if((dbprevData[i].beacon003y-settingdata3y)<-90){
+      config2.data.datasets[2].data[i]=-90;
+    }
+    else{
+     config2.data.datasets[2].data[i]=(dbprevData[i].beacon003y-settingdata3y);
+    }
+
+
+    if((dbprevData[i].beacon004y-settingdata4y)>90){
+      config2.data.datasets[3].data[i]=90;
+    }
+    else if((dbprevData[i].beacon004y-settingdata4y)<-90){
+      config2.data.datasets[3].data[i]=-90;
+    }
+    else{
+     config2.data.datasets[3].data[i]=(dbprevData[i].beacon004y-settingdata4y);
+    }
+
+
+    if((dbprevData[i].beacon005y-settingdata5y)>90){
+      config2.data.datasets[4].data[i]=90;
+    }
+    else if((dbprevData[i].beacon005y-settingdata5y)<-90){
+      config2.data.datasets[4].data[i]=-90;
+    }
+    else{
+     config2.data.datasets[4].data[i]=(dbprevData[i].beacon005y-settingdata5y);
+    }
+  }
+
+  if(!hasChart){
+    initChart();
+  }
+
+  $('#BTN').click(function () {
+    audio_cnt+=1;
+    if(audio_cnt==1){
+      audio.muted=true;
+      audiotext.text("OFF");
+      audiobutton.text(" 시작");
+      audioicon.removeClass("fa fa-play");
+      audioicon.addClass("fa fa-pause");
+    }
+    if(audio_cnt==2){
+      audio.muted=false;
+      audiotext.text("ON");
+      audiobutton.text(" 멈춤");
+      audioicon.removeClass("fa fa-pause");
+      audioicon.addClass("fa fa-play");
+      audio_cnt=0;
+    }
+
+  })
+
+  if(alaram!=""){
+    //alert_cnt=1;
+    color.removeClass("panel-green");
+    color.addClass("panel-red");
+    emoticon.removeClass("fa fa-smile-o");
+    emoticon.addClass("fa fa-meh-o");
+    text1.text("경고");
+    alaram1.text(alaram);
+    audio.play();
+  }
+
+ if(alaram==""){
+  // alert_cnt=0;
+  alaram1.text("\u00A0");
+  color.removeClass("panel-red");
+  color.addClass("panel-green");
+  emoticon.removeClass("fa fa-meh-o");
+  emoticon.addClass("fa fa-smile-o");
+  text1.text("양호");
+  audio.pause();
+  }
+
+})
+
+
+socket.on('chat message',function (tcp_R_Data,alaram,recieveArray) {
+//console.log(tcp_R_Data);
+console.log(recieveArray);
+  if(alaram!=""){
+    alert_cnt=1;
+    color.removeClass("panel-green");
+    color.addClass("panel-red");
+    emoticon.removeClass("fa fa-smile-o");
+    emoticon.addClass("fa fa-meh-o");
+    text1.text("경고");
+    alaram1.text(alaram);
+
+  }
+
+ if(alaram==""){
+   alert_cnt=0;
+  alaram1.text("\u00A0");
+  color.removeClass("panel-red");
+  color.addClass("panel-green");
+  emoticon.removeClass("fa fa-meh-o");
+  emoticon.addClass("fa fa-smile-o");
+  text1.text("양호");
+
+  }
+
+  if(alert_cnt==1){
+    audio.play();
+  }
+  if(alert_cnt==0){
+    audio.pause();
+  }
+  if (config1.data.datasets.length > 0) {
+
+            var now = new Date();
+            var hour = now.getHours();
+            var min = now.getMinutes();
+            var second = now.getSeconds();
+            config1.data.labels.push(hour+":"+min+":"+second);
+
+            if(config1.data.labels.length==21){
+              config1.data.labels.shift(0,21);
+              config1.data.datasets[0].data.shift(0,20);
+              config1.data.datasets[1].data.shift(0,20);
+              config1.data.datasets[2].data.shift(0,20);
+              config1.data.datasets[3].data.shift(0,20);
+              config1.data.datasets[4].data.shift(0,20);
+
+              //1
+              if((tcp_R_Data[0]-settingdata1x)>90){
+                config1.data.datasets[0].data.push(90);
+              }
+              else if((tcp_R_Data[0]-settingdata1x)<-90){
+                config1.data.datasets[0].data.push(-90);
+              }
+              else{
+               config1.data.datasets[0].data.push(tcp_R_Data[0]-settingdata1x);
+             }
+             //2
+             if((tcp_R_Data[3]-settingdata2x)>90){
+               config1.data.datasets[1].data.push(90);
+             }
+             else if((tcp_R_Data[3]-settingdata2x)<-90){
+               config1.data.datasets[1].data.push(-90);
+             }
+             else{
+              config1.data.datasets[1].data.push(tcp_R_Data[3]-settingdata2x);
+            }
+
+            //3
+            if((tcp_R_Data[6]-settingdata3x)>90){
+              config1.data.datasets[2].data.push(90);
+            }
+            else if((tcp_R_Data[6]-settingdata3x)<-90){
+              config1.data.datasets[2].data.push(-90);
+            }
+            else{
+             config1.data.datasets[2].data.push(tcp_R_Data[6]-settingdata3x);
+           }
+
+           //4
+           if((tcp_R_Data[9]-settingdata4x)>90){
+             config1.data.datasets[3].data.push(90);
+           }
+           else if((tcp_R_Data[9]-settingdata4x)<-90){
+             config1.data.datasets[3].data.push(-90);
+           }
+           else{
+            config1.data.datasets[3].data.push(tcp_R_Data[9]-settingdata4x);
+          }
+          //5
+          if((tcp_R_Data[12]-settingdata5x)>90){
+            config1.data.datasets[4].data.push(90);
+          }
+          else if((tcp_R_Data[12]-settingdata5x)<-90){
+            config1.data.datasets[4].data.push(-90);
+          }
+          else{
+           config1.data.datasets[4].data.push(tcp_R_Data[12]-settingdata5x);
+         }
+
+            }
+            else{
+              if((tcp_R_Data[0]-settingdata1x)>90){
+                config1.data.datasets[0].data.push(90);
+              }
+              else if((tcp_R_Data[0]-settingdata1x)<-90){
+                config1.data.datasets[0].data.push(-90);
+              }
+              else{
+               config1.data.datasets[0].data.push(tcp_R_Data[0]-settingdata1x);
+             }
+             //2
+             if((tcp_R_Data[3]-settingdata2x)>90){
+               config1.data.datasets[1].data.push(90);
+             }
+             else if((tcp_R_Data[3]-settingdata2x)<-90){
+               config1.data.datasets[1].data.push(-90);
+             }
+             else{
+              config1.data.datasets[1].data.push(tcp_R_Data[3]-settingdata2x);
+            }
+
+            //3
+            if((tcp_R_Data[6]-settingdata3x)>90){
+              config1.data.datasets[2].data.push(90);
+            }
+            else if((tcp_R_Data[6]-settingdata3x)<-90){
+              config1.data.datasets[2].data.push(-90);
+            }
+            else{
+             config1.data.datasets[2].data.push(tcp_R_Data[6]-settingdata3x);
+           }
+
+           //4
+           if((tcp_R_Data[9]-settingdata4x)>90){
+             config1.data.datasets[3].data.push(90);
+           }
+           else if((tcp_R_Data[9]-settingdata4x)<-90){
+             config1.data.datasets[3].data.push(-90);
+           }
+           else{
+            config1.data.datasets[3].data.push(tcp_R_Data[9]-settingdata4x);
+          }
+          //5
+          if((tcp_R_Data[12]-settingdata5x)>90){
+            config1.data.datasets[4].data.push(90);
+          }
+          else if((tcp_R_Data[12]-settingdata5x)<-90){
+            config1.data.datasets[4].data.push(-90);
+          }
+          else{
+           config1.data.datasets[4].data.push(tcp_R_Data[12]-settingdata5x);
+         }
+
+          }
+            window.myLine1.update();
+        }
+
+        if (config2.data.datasets.length > 0) {
+
+                  var now = new Date();
+                  var hour = now.getHours();
+                  var min = now.getMinutes();
+                  var second = now.getSeconds();
+                  config2.data.labels.push(hour+":"+min+":"+second);
+
+                  if(config2.data.labels.length==21){
+                    config2.data.labels.shift(0,21);
+                    config2.data.datasets[0].data.shift(0,20);
+                    config2.data.datasets[1].data.shift(0,20);
+                    config2.data.datasets[2].data.shift(0,20);
+                    config2.data.datasets[3].data.shift(0,20);
+                    config2.data.datasets[4].data.shift(0,20);
+                    //1
+                    if((tcp_R_Data[1]-settingdata1y)>90){
+                      config2.data.datasets[0].data.push(90);
+                    }
+                    else if((tcp_R_Data[1]-settingdata1y)<-90){
+                      config2.data.datasets[0].data.push(-90);
+                    }
+                    else{
+                     config2.data.datasets[0].data.push(tcp_R_Data[1]-settingdata1y);
+                   }
+                   //2
+                   if((tcp_R_Data[4]-settingdata2y)>90){
+                     config2.data.datasets[1].data.push(90);
+                   }
+                   else if((tcp_R_Data[4]-settingdata2y)<-90){
+                     config2.data.datasets[1].data.push(-90);
+                   }
+                   else{
+                    config2.data.datasets[1].data.push(tcp_R_Data[4]-settingdata2y);
+                  }
+                  //3
+                  if((tcp_R_Data[7]-settingdata3y)>90){
+                    config2.data.datasets[2].data.push(90);
+                  }
+                  else if((tcp_R_Data[7]-settingdata3y)<-90){
+                    config2.data.datasets[2].data.push(-90);
+                  }
+                  else{
+                   config2.data.datasets[2].data.push(tcp_R_Data[7]-settingdata3y);
+                 }
+                 //4
+                 if((tcp_R_Data[10]-settingdata4y)>90){
+                   config2.data.datasets[3].data.push(90);
+                 }
+                 else if((tcp_R_Data[10]-settingdata4y)<-90){
+                   config2.data.datasets[3].data.push(-90);
+                 }
+                 else{
+                  config2.data.datasets[3].data.push(tcp_R_Data[10]-settingdata4y);
+                }
+                //5
+                if((tcp_R_Data[13]-settingdata5y)>90){
+                  config2.data.datasets[4].data.push(90);
+                }
+                else if((tcp_R_Data[13]-settingdata5y)<-90){
+                  config2.data.datasets[4].data.push(-90);
+                }
+                else{
+                 config2.data.datasets[4].data.push(tcp_R_Data[13]-settingdata5y);
+               }
+
+
+                  }
+                  else{
+                    //1
+                    if((tcp_R_Data[1]-settingdata1y)>90){
+                      config2.data.datasets[0].data.push(90);
+                    }
+                    else if((tcp_R_Data[1]-settingdata1y)<-90){
+                      config2.data.datasets[0].data.push(-90);
+                    }
+                    else{
+                     config2.data.datasets[0].data.push(tcp_R_Data[1]-settingdata1y);
+                   }
+                   //2
+                   if((tcp_R_Data[4]-settingdata2y)>90){
+                     config2.data.datasets[1].data.push(90);
+                   }
+                   else if((tcp_R_Data[4]-settingdata2y)<-90){
+                     config2.data.datasets[1].data.push(-90);
+                   }
+                   else{
+                    config2.data.datasets[1].data.push(tcp_R_Data[4]-settingdata2y);
+                  }
+                  //3
+                  if((tcp_R_Data[7]-settingdata3y)>90){
+                    config2.data.datasets[2].data.push(90);
+                  }
+                  else if((tcp_R_Data[7]-settingdata3y)<-90){
+                    config2.data.datasets[2].data.push(-90);
+                  }
+                  else{
+                   config2.data.datasets[2].data.push(tcp_R_Data[7]-settingdata3y);
+                 }
+                 //4
+                 if((tcp_R_Data[10]-settingdata4y)>90){
+                   config2.data.datasets[3].data.push(90);
+                 }
+                 else if((tcp_R_Data[10]-settingdata4y)<-90){
+                   config2.data.datasets[3].data.push(-90);
+                 }
+                 else{
+                  config2.data.datasets[3].data.push(tcp_R_Data[10]-settingdata4y);
+                }
+                //5
+                if((tcp_R_Data[13]-settingdata5y)>90){
+                  config2.data.datasets[4].data.push(90);
+                }
+                else if((tcp_R_Data[13]-settingdata5y)<-90){
+                  config2.data.datasets[4].data.push(-90);
+                }
+                else{
+                 config2.data.datasets[4].data.push(tcp_R_Data[13]-settingdata5y);
+               }
+
+                }
+                  window.myLine2.update();
+              }
+
+});
+
+
+
+    var config1 = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                borderColor : "#FF4848",
+                backgroundColor : "#FF4848",
+                pointBorderColor : "#FF4848",
+                pointBackgroundColor :"#FF4848",
+                pointBorderWidth : 1,
+                label: "1번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+
+                borderColor : "#FF5E00",
+                backgroundColor : "#FF5E00",
+                pointBorderColor : "#FF5E00",
+                pointBackgroundColor :"#FF5E00",
+                pointBorderWidth : 1,
+                label: "2번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#FFE400",
+                backgroundColor : "#FFE400",
+                pointBorderColor : "#FFE400",
+                pointBackgroundColor :"#FFE400",
+                pointBorderWidth : 1,
+                label: "3번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#47C83E",
+                backgroundColor : "#47C83E",
+                pointBorderColor : "#47C83E",
+                pointBackgroundColor :"#47C83E",
+                pointBorderWidth : 1,
+                label: "4번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#4374D9",
+                backgroundColor : "#4374D9",
+                pointBorderColor : "#4374D9",
+                pointBackgroundColor :"#4374D9",
+                pointBorderWidth : 1,
+                label: "5번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+           ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '시간'
+                    }
+                }],
+                yAxes: [{
+                    ticks:{
+                      suggestedMax:90,
+                      beginAtZero: true
+                    },
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '각도'
+                    }
+                }]
+            },
+            title: {
+                display: true
+            }
+        }
+    };
+    var config2 = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                borderColor : "#FF4848",
+                backgroundColor : "#FF4848",
+                pointBorderColor : "#FF4848",
+                pointBackgroundColor :"#FF4848",
+                pointBorderWidth : 1,
+                label: "1번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+
+                borderColor : "#FF5E00",
+                backgroundColor : "#FF5E00",
+                pointBorderColor : "#FF5E00",
+                pointBackgroundColor :"#FF5E00",
+                pointBorderWidth : 1,
+                label: "2번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#FFE400",
+                backgroundColor : "#FFE400",
+                pointBorderColor : "#FFE400",
+                pointBackgroundColor :"#FFE400",
+                pointBorderWidth : 1,
+                label: "3번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#47C83E",
+                backgroundColor : "#47C83E",
+                pointBorderColor : "#47C83E",
+                pointBackgroundColor :"#47C83E",
+                pointBorderWidth : 1,
+                label: "4번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+            {
+                borderColor : "#4374D9",
+                backgroundColor : "#4374D9",
+                pointBorderColor : "#4374D9",
+                pointBackgroundColor :"#4374D9",
+                pointBorderWidth : 1,
+                label: "5번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+           ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '시간'
+                    }
+                }],
+                yAxes: [{
+                    ticks:{
+                      suggestedMax: 90,
+                      beginAtZero: true
+                    },
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '각도'
+                    }
+                }]
+            },
+            title: {
+                display: true
+            }
+        }
+    };
+
+
+    var hasChart = false;
+    var initChart = function(){
+      var ctx = document.getElementById("canvas").getContext("2d");
+      var ctx2 = document.getElementById("canvas2").getContext("2d");
+      window.myLine1 = new Chart(ctx, config1);
+      window.myLine2 = new Chart(ctx2, config2);
+      hasChart = true;
+    };
+
+
+    window.onload = function() {
+
+    };
+
+</script>
+
+
+
+
+
+<script>
+
+
+
+
+</script>
+
+<!-- /#page-wrapper -->
+</div>

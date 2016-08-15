@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../../views/partials/head/head %>
+    <!-- chart element-->
+    <% include ../../views/partials/elements/chartelement %>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                  <a class="navbar-brand"><img src="./img/kongtech-logo.png" width="100px"</img></a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+
+              <%include ../partials/top/message %>
+              <%include ../partials/top/notice %>
+              <%include ../partials/top/user %>
+
+            </ul>
+            <%include ../partials/side/sidemenu3-2 %>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <!-- body-main insert -->
+        <%include ../partials/body/graph-2 %>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="javascripts/jquery-2.2.3.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="javascripts/bootstrap.min.js"></script>
+    <!-- DataTables JavaScript -->
+
+    <script src="javascripts/jquery.dataTables.min.js"></script>
+      <script src="javascripts/dataTables.bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+</body>
+
+</html>

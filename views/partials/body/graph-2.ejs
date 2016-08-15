@@ -1,0 +1,480 @@
+<div id="page-wrapper">
+
+  <!-- Page Heading -->
+          <div class="row">
+              <div class="col-lg-8" >
+                  <h2 class="page-header" >
+                    센서 세팅:
+                    <% if(data2.rule002x!=undefined) {%>
+                    <%= 'X = '+(data2.rule002x-90) %>
+                    <%}%>
+                    <% if(data2.rule002y!=undefined) {%>
+                    <%= 'Y = '+(data2.rule002y-90) %>
+                    <%}%>
+
+                    기준치:
+                    <%=data2.range002%>
+                  </h2>
+
+                  <ol class="breadcrumb">
+                      <li class="active">
+                          <i class="fa fa-road"></i> 정보
+                      </li>
+                  </ol>
+              </div>
+              <div class="col-lg-2" style="padding-top:3%">
+              <div id="color" class="panel panel-green">
+                  <div class="panel-heading">
+                      <div class="row">
+                          <div class="col-xs-3">
+                            <div id ="emoticon">
+                              <i class="fa fa-smile-o fa-3x"></i>
+                          </div>
+                        </div>
+                          <div class="col-xs-9 text-center">
+                              <div id="text"class="huge1">양호</div>
+                              <div></div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <a id="#" style="cursor:pointer;">
+                      <div class="panel-footer">
+                          <span id="test7" class="pull-left"></span>
+                          <span class="pull-right">&nbsp;</span>
+                          <div id="help"class="clearfix"></div>
+                      </div>
+                  </a>
+              </div>
+            </div>
+		<div class="col-lg-2" style="padding-top:3%">
+            <div id="audiocolor" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                          <div id ="audioplay">
+                            <i class="fa fa-play fa-3x"></i>
+                        </div>
+                      </div>
+                        <div class="col-xs-9 text-center">
+                            <div id="audiotext"class="huge3">ON</div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <a id="BTN" style="cursor:pointer;">
+                    <div class="panel-footer">
+                        <span id="test7" class="pull-left"></span>
+                        <span class="pull-right"></span>
+                        <div id="audiobutton"class="clearfix">멈춤</div>
+                    </div>
+                </a>
+            </div>
+
+          </div>
+
+          </div>
+
+    <canvas id="canvas" width="50%" height="10%";></canvas>
+    <canvas id="canvas2" width="50%" height="10%";></canvas>
+
+
+<br>
+<br>
+
+<div class="row">
+              <div class="col-lg-12">
+                  <div class="panel panel-default">
+                      <div class="panel-heading">
+                          특이사항
+                      </div>
+                      <!-- /.panel-heading -->
+                      <div class="panel-body">
+                          <div class="dataTable_wrapper">
+                              <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                  <thead>
+                                      <tr>
+
+                                          <th style="width:10%">중계기 번호</th>
+                                          <th style="width:10%">감지기 번호</th>
+                                          <th style="width:20%">X 변동 수치</th>
+                                          <th style="width:20%">Y 변동 수치</th>
+                                          <th style="width:20%">날짜</th>
+                                          <th style="width:20%">시간</th>
+                                          <th style="width:10%">등급</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+
+
+                                <% data.forEach(function(bc002){%>
+                                <tr>
+
+                                    <td><%=bc002.gnum%></a></td>
+                                    <td><%=bc002.bnum%></td>
+                                    <td><%= (Math.abs(bc002.beaconx-(parseInt(data2.rule002x)))) %></td>
+                                    <td><%= (Math.abs(bc002.beacony-(parseInt(data2.rule002y)))) %></td>
+                                    <td><%=bc002.createdAt.toLocaleDateString()%></td>
+                                    <td><%=bc002.createdAt.toLocaleTimeString()%></td>
+                                    <td><div style="text-align:center;"><span class="label label-danger" ><%=bc002.status%></span></div></td>
+                                </tr>
+                                <% })%>
+
+
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- /.table-responsive -->
+
+                      </div>
+                      <!-- /.panel-body -->
+                  </div>
+                  <!-- /.panel -->
+              </div>
+              <!-- /.col-lg-12 -->
+          </div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+var settingdata1 = parseInt("<%=data2.rule002x%>");
+var settingdata2 = parseInt("<%=data2.rule002y%>");
+
+var socket = io.connect("http://localhost");
+var audio = new Audio();
+audio.src='/audio/alert.mp3';
+var alert_cnt=0;
+audio.loop=true;
+var audio_cnt=0;
+
+
+// alaram
+var color = $("#color");
+var emoticon =$("#emoticon i");
+var size = $("#size");
+var text1 = $("#text");
+var alaram1 = $("#help");
+
+//audio
+var audiocolor= $("#audiocolor");
+var audioicon = $("#audioplay i");
+var audiotext = $("#audiotext");
+var audiobutton = $("#audiobutton");
+
+
+socket.on('news',function (alaram,dbprevData) {
+  for(var i=0;i<20;i++){
+    config1.data.labels[i]=(dbprevData[i].rectime);
+    if((dbprevData[i].beacon001x-settingdata1)>90){
+      config1.data.datasets[0].data[i]=90;
+    }
+    else if((dbprevData[i].beacon001x-settingdata1)<-90){
+      config1.data.datasets[0].data[i]=-90;
+    }
+    else{
+     config1.data.datasets[0].data[i]=(dbprevData[i].beacon001x-settingdata1);
+    }
+    config2.data.labels[i]=(dbprevData[i].rectime);
+    if((dbprevData[i].beacon001y-settingdata2)>90){
+      config2.data.datasets[0].data[i]=90;
+    }
+    else if((dbprevData[i].beacon001y-settingdata2)<-90){
+      config2.data.datasets[0].data[i]=-90;
+    }
+    else{
+    config2.data.datasets[0].data[i]=(dbprevData[i].beacon001y-settingdata2);
+    }
+
+  }
+
+  if(!hasChart){
+    initChart();
+  }
+$('#BTN').click(function () {
+    audio_cnt+=1;
+    if(audio_cnt==1){
+      audio.muted=true;
+      audiotext.text("OFF");
+      audiobutton.text(" 시작");
+      audioicon.removeClass("fa fa-play");
+      audioicon.addClass("fa fa-pause");
+    }
+    if(audio_cnt==2){
+      audio.muted=false;
+      audiotext.text("ON");
+      audiobutton.text(" 멈춤");
+      audioicon.removeClass("fa fa-pause");
+      audioicon.addClass("fa fa-play");
+      audio_cnt=0;
+    }
+
+  })
+
+
+  if(alaram!=""){
+    //alert_cnt=1;
+    color.removeClass("panel-green");
+    color.addClass("panel-red");
+    emoticon.removeClass("fa fa-smile-o");
+    emoticon.addClass("fa fa-meh-o");
+    text1.text("경고");
+    alaram1.text(alaram);
+    audio.play();
+
+  }
+
+ if(alaram==""){
+  // alert_cnt=0;
+  alaram1.text("\u00A0");
+  color.removeClass("panel-red");
+  color.addClass("panel-green");
+  emoticon.removeClass("fa fa-meh-o");
+  emoticon.addClass("fa fa-smile-o");
+  text1.text("양호");
+  audio.pause();
+  }
+
+})
+
+
+socket.on('chat message',function (pig,alaram,recieveArray) {
+
+console.log(recieveArray);
+
+  if(alaram!=""){
+    alert_cnt=1;
+    color.removeClass("panel-green");
+    color.addClass("panel-red");
+    emoticon.removeClass("fa fa-smile-o");
+    emoticon.addClass("fa fa-meh-o");
+    text1.text("경고");
+    alaram1.text(alaram);
+
+  }
+
+ if(alaram==""){
+   alert_cnt=0;
+  alaram1.text("\u00A0");
+  color.removeClass("panel-red");
+  color.addClass("panel-green");
+  emoticon.removeClass("fa fa-meh-o");
+  emoticon.addClass("fa fa-smile-o");
+  text1.text("양호");
+
+  }
+
+  if(alert_cnt==1){
+    audio.play();
+  }
+  if(alert_cnt==0){
+    audio.pause();
+  }
+  if (config1.data.datasets.length > 0) {
+
+            var now = new Date();
+            var hour = now.getHours();
+            var min = now.getMinutes();
+            var second = now.getSeconds();
+            config1.data.labels.push(hour+":"+min+":"+second);
+
+            if(config1.data.labels.length==21){
+              config1.data.labels.shift(0,21);
+              config1.data.datasets[0].data.shift(0,20);
+              console.log((pig[3]-settingdata1));
+              if((pig[3]-settingdata1)>90){
+                config1.data.datasets[0].data.push(90);
+              }
+              else if((pig[3]-settingdata1)<-90){
+                config1.data.datasets[0].data.push(-90);
+              }
+              else{
+               config1.data.datasets[0].data.push(pig[3]-settingdata1);
+             }
+
+            }
+            else{
+              if((pig[3]-settingdata1)>90){
+                config1.data.datasets[0].data.push(90);
+              }
+              else if(pig[3]-settingdata1<-90){
+                config1.data.datasets[0].data.push(-90);
+              }
+              else{
+               config1.data.datasets[0].data.push(pig[3]-settingdata1);
+             }
+
+          }
+            window.myLine1.update();
+        }
+  if (config2.data.datasets.length > 0) {
+
+                  var now = new Date();
+                  var hour = now.getHours();
+                  var min = now.getMinutes();
+                  var second = now.getSeconds();
+                  config2.data.labels.push(hour+":"+min+":"+second);
+
+                  if(config2.data.labels.length==21){
+                    config2.data.labels.shift(0,21);
+                    config2.data.datasets[0].data.shift(0,20);
+
+                    if((pig[4]-settingdata2)>90){
+                      config2.data.datasets[0].data.push(90);
+                    }
+                    else if((pig[4]-settingdata2)<-90){
+                      config2.data.datasets[0].data.push(-90);
+                    }
+                    else
+                     config2.data.datasets[0].data.push(pig[4]-settingdata2);
+
+                  }
+                  else{
+
+                    if((pig[4]-settingdata2)>90){
+                      config2.data.datasets[0].data.push(90);
+                    }
+                    else if((pig[4]-settingdata2)<-90){
+                      config2.data.datasets[0].data.push(-90);
+                    }
+                    else
+                     config2.data.datasets[0].data.push(pig[4]-settingdata2);
+
+                }
+                  window.myLine2.update();
+              }
+
+});
+
+
+
+    var config1 = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                borderColor : "#FF5E00",
+                backgroundColor : "#FF5E00",
+                pointBorderColor : "#FF5E00",
+                pointBackgroundColor :"#FF5E00",
+                pointBorderWidth : 1,
+                label: "2번 X",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+           ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '시간'
+                    }
+                }],
+                yAxes: [{
+                    ticks:{
+                      suggestedMax: 90,
+                      beginAtZero: true
+                    },
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '각도'
+                    }
+                }]
+            },
+            title: {
+                display: true
+            }
+        }
+    };
+    var config2 = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+            {
+                borderColor : "#FF5E00",
+                backgroundColor : "#FF5E00",
+                pointBorderColor : "#FF5E00",
+                pointBackgroundColor :"#FF5E00",
+                pointBorderWidth : 1,
+                label: "2번 Y",
+                data: [],
+                lineTension: 0,
+                fill: false,
+            },
+           ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'bottom',
+            },
+            hover: {
+                mode: 'label'
+            },
+            scales: {
+                xAxes: [{
+
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '시간'
+                    }
+                }],
+                yAxes: [{
+                    ticks:{
+                      suggestedMax: 90,
+                      beginAtZero: true
+                    },
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '각도'
+                    }
+                }]
+            },
+            title: {
+                display: true
+            }
+        }
+    };
+
+
+    var hasChart = false;
+    var initChart = function(){
+      var ctx = document.getElementById("canvas").getContext("2d");
+      var ctx2 = document.getElementById("canvas2").getContext("2d");
+      window.myLine1 = new Chart(ctx, config1);
+      window.myLine2 = new Chart(ctx2, config2);
+      hasChart = true;
+    };
+
+
+    window.onload = function() {
+
+    };
+
+</script>
+
+
+<script>
+
+
+</script>
+
+<!-- /#page-wrapper -->
+</div>
