@@ -25,7 +25,7 @@
 
 <i class=" fa fa-long-arrow-right"></i>
 <script>
-var socket = io.connect("http://localhost");
+var socket = io.connect("http://52.78.82.199:80");
 function stsubmit1() {
   socket.emit('std1');
 }
@@ -60,7 +60,7 @@ socket.on('luck1',function () {
     </div>
     </h5>
   <script>
-  var socket = io.connect("http://localhost");
+  var socket = io.connect("http://52.78.82.199:80");
 
   $('#std1').click(function () {
       ruleform1.submit();
@@ -82,7 +82,7 @@ socket.on('luck1',function () {
     <input type ="button"  id="ruleid2" name="ruleid2" value="적용" onclick="stsubmit2()"/>
     <i class=" fa fa-long-arrow-right"></i>
     <script>
-    var socket = io.connect("http://localhost");
+    var socket = io.connect("http://52.78.82.199:80");
     function stsubmit2() {
       socket.emit('std2');
     }
@@ -116,7 +116,7 @@ socket.on('luck1',function () {
         </div>
         </h5>
         <script>
-        var socket = io.connect("http://localhost");
+        var socket = io.connect("http://52.78.82.199:80");
         $('#std2').click(function () {
             ruleform2.submit();
         })
@@ -136,7 +136,7 @@ socket.on('luck1',function () {
       <input type ="button" id="ruleid3" name="ruleid3" value="적용" onclick="stsubmit3()"/>
       <i class=" fa fa-long-arrow-right"></i>
       <script>
-      var socket = io.connect("http://localhost");
+      var socket = io.connect("http://52.78.82.199:80");
       function stsubmit3() {
         socket.emit('std3');
       }
@@ -170,7 +170,7 @@ socket.on('luck1',function () {
           </div>
           </h5>
           <script>
-          var socket = io.connect("http://localhost");
+          var socket = io.connect("http://52.78.82.199:80");
           $('#std3').click(function () {
               ruleform3.submit();
           })
@@ -191,7 +191,7 @@ socket.on('luck1',function () {
       <input type ="button"  id="ruleid4" name="ruleid4" value="적용" onclick="stsubmit4()"/>
       <i class=" fa fa-long-arrow-right"></i>
       <script>
-      var socket = io.connect("http://localhost");
+      var socket = io.connect("http://52.78.82.199:80");
       function stsubmit4() {
         socket.emit('std4');
       }
@@ -244,7 +244,7 @@ socket.on('luck1',function () {
         <input type ="button"  id="ruleid5" name="ruleid5" value="적용" onclick="stsubmit5()"/>
         <i class=" fa fa-long-arrow-right"></i>
         <script>
-        var socket = io.connect("http://localhost");
+        var socket = io.connect("http://52.78.82.199:80");
         function stsubmit5() {
           socket.emit('std5');
         }
@@ -278,7 +278,7 @@ socket.on('luck1',function () {
             </div>
             </h5>
             <script>
-            var socket = io.connect("http://localhost");
+            var socket = io.connect("http://52.78.82.199:80");
             $('#std5').click(function () {
                 ruleform5.submit();
             })
