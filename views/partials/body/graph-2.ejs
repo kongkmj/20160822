@@ -166,7 +166,7 @@ var audiobutton = $("#audiobutton");
 socket.on('news',function (alaram,dbprevData) {
   for(var i=0;i<20;i++){
     config1.data.labels[i]=(dbprevData[i].rectime);
-    if((dbprevData[i].beacon001x-settingdata1)>90){
+    if((dbprevData[i].beacon001x)>179){
       config1.data.datasets[0].data[i]=90;
     }
     else if((dbprevData[i].beacon001x-settingdata1)<-90){
@@ -176,7 +176,7 @@ socket.on('news',function (alaram,dbprevData) {
      config1.data.datasets[0].data[i]=(dbprevData[i].beacon001x-settingdata1);
     }
     config2.data.labels[i]=(dbprevData[i].rectime);
-    if((dbprevData[i].beacon001y-settingdata2)>90){
+    if((dbprevData[i].beacon001y)>179){
       config2.data.datasets[0].data[i]=90;
     }
     else if((dbprevData[i].beacon001y-settingdata2)<-90){
@@ -282,7 +282,7 @@ console.log(recieveArray);
               config1.data.labels.shift(0,21);
               config1.data.datasets[0].data.shift(0,20);
               console.log((pig[3]-settingdata1));
-              if((pig[3]-settingdata1)>90){
+              if((pig[3])>179){
                 config1.data.datasets[0].data.push(90);
               }
               else if((pig[3]-settingdata1)<-90){
@@ -294,7 +294,7 @@ console.log(recieveArray);
 
             }
             else{
-              if((pig[3]-settingdata1)>90){
+              if((pig[3])>179){
                 config1.data.datasets[0].data.push(90);
               }
               else if(pig[3]-settingdata1<-90){
@@ -319,7 +319,7 @@ console.log(recieveArray);
                     config2.data.labels.shift(0,21);
                     config2.data.datasets[0].data.shift(0,20);
 
-                    if((pig[4]-settingdata2)>90){
+                    if((pig[4])>179){
                       config2.data.datasets[0].data.push(90);
                     }
                     else if((pig[4]-settingdata2)<-90){
@@ -331,7 +331,7 @@ console.log(recieveArray);
                   }
                   else{
 
-                    if((pig[4]-settingdata2)>90){
+                    if((pig[4])>179){
                       config2.data.datasets[0].data.push(90);
                     }
                     else if((pig[4]-settingdata2)<-90){

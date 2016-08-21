@@ -154,7 +154,8 @@ socket.on('news',function (alaram,dbprevData) {
   for(var i=0;i<20;i++){
     //roll
     config1.data.labels[i]=(dbprevData[i].rectime);
-    if((dbprevData[i].beacon001x-settingdata1x)>90){
+    //1
+    if((dbprevData[i].beacon001x)>179){
       config1.data.datasets[0].data[i]=90;
     }
     else if((dbprevData[i].beacon001x-settingdata1x)<-90){
@@ -163,8 +164,8 @@ socket.on('news',function (alaram,dbprevData) {
     else{
      config1.data.datasets[0].data[i]=(dbprevData[i].beacon001x-settingdata1x);
     }
-
-    if((dbprevData[i].beacon002x-settingdata2x)>90){
+    //2
+    if((dbprevData[i].beacon002x)>179){
       config1.data.datasets[1].data[i]=90;
     }
     else if((dbprevData[i].beacon002x-settingdata2x)<-90){
@@ -173,17 +174,18 @@ socket.on('news',function (alaram,dbprevData) {
     else{
      config1.data.datasets[1].data[i]=(dbprevData[i].beacon002x-settingdata2x);
     }
-
-    if((dbprevData[i].beacon003x-settingdata3x)>90){
+    //3
+    if((dbprevData[i].beacon003x)>179){
       config1.data.datasets[2].data[i]=90;
     }
     else if((dbprevData[i].beacon003x-settingdata3x)<-90){
       config1.data.datasets[2].data[i]=-90;
     }
     else{
-     config1.data.datasets[3].data[i]=(dbprevData[i].beacon004x-settingdata4x);
+     config1.data.datasets[2].data[i]=(dbprevData[i].beacon003x-settingdata3x);
     }
-    if((dbprevData[i].beacon004x-settingdata4x)>90){
+    //4
+    if((dbprevData[i].beacon004x)>179){
       config1.data.datasets[3].data[i]=90;
     }
     else if((dbprevData[i].beacon004x-settingdata4x)<-90){
@@ -192,7 +194,8 @@ socket.on('news',function (alaram,dbprevData) {
     else{
      config1.data.datasets[3].data[i]=(dbprevData[i].beacon004x-settingdata4x);
     }
-    if((dbprevData[i].beacon005x-settingdata5x)>90){
+    //5
+    if((dbprevData[i].beacon005x)>179){
       config1.data.datasets[4].data[i]=90;
     }
     else if((dbprevData[i].beacon005x-settingdata5x)<-90){
@@ -204,7 +207,7 @@ socket.on('news',function (alaram,dbprevData) {
 
     //pitch
     config2.data.labels[i]=(dbprevData[i].rectime);
-    if((dbprevData[i].beacon001y-settingdata1y)>90){
+    if((dbprevData[i].beacon001y)>179){
       config2.data.datasets[0].data[i]=90;
     }
     else if((dbprevData[i].beacon001y-settingdata1y)<-90){
@@ -214,7 +217,7 @@ socket.on('news',function (alaram,dbprevData) {
      config2.data.datasets[0].data[i]=(dbprevData[i].beacon001y-settingdata1y);
     }
 
-    if((dbprevData[i].beacon002y-settingdata2y)>90){
+    if((dbprevData[i].beacon002y)>179){
       config2.data.datasets[1].data[i]=90;
     }
     else if((dbprevData[i].beacon002y-settingdata2y)<-90){
@@ -225,7 +228,7 @@ socket.on('news',function (alaram,dbprevData) {
     }
 
 
-    if((dbprevData[i].beacon003y-settingdata3y)>90){
+    if((dbprevData[i].beacon003y)>179){
       config2.data.datasets[2].data[i]=90;
     }
     else if((dbprevData[i].beacon003y-settingdata3y)<-90){
@@ -236,7 +239,7 @@ socket.on('news',function (alaram,dbprevData) {
     }
 
 
-    if((dbprevData[i].beacon004y-settingdata4y)>90){
+    if((dbprevData[i].beacon004y)>179){
       config2.data.datasets[3].data[i]=90;
     }
     else if((dbprevData[i].beacon004y-settingdata4y)<-90){
@@ -247,7 +250,7 @@ socket.on('news',function (alaram,dbprevData) {
     }
 
 
-    if((dbprevData[i].beacon005y-settingdata5y)>90){
+    if((dbprevData[i].beacon005y)>179){
       config2.data.datasets[4].data[i]=90;
     }
     else if((dbprevData[i].beacon005y-settingdata5y)<-90){
@@ -307,9 +310,10 @@ socket.on('news',function (alaram,dbprevData) {
 })
 
 
-socket.on('chat message',function (tcp_R_Data,alaram,recieveArray) {
+socket.on('chat message',function (tcp_R_Data,alaram,recieveArray,conn) {
 //console.log(tcp_R_Data);
 console.log(recieveArray);
+console.log("끊긴 횟수: "+conn);
   if(alaram!=""){
     alert_cnt=1;
     color.removeClass("panel-green");
@@ -355,7 +359,7 @@ console.log(recieveArray);
               config1.data.datasets[4].data.shift(0,20);
 
               //1
-              if((tcp_R_Data[0]-settingdata1x)>90){
+              if((tcp_R_Data[0])>179){
                 config1.data.datasets[0].data.push(90);
               }
               else if((tcp_R_Data[0]-settingdata1x)<-90){
@@ -365,7 +369,7 @@ console.log(recieveArray);
                config1.data.datasets[0].data.push(tcp_R_Data[0]-settingdata1x);
              }
              //2
-             if((tcp_R_Data[3]-settingdata2x)>90){
+             if((tcp_R_Data[3])>179){
                config1.data.datasets[1].data.push(90);
              }
              else if((tcp_R_Data[3]-settingdata2x)<-90){
@@ -376,7 +380,7 @@ console.log(recieveArray);
             }
 
             //3
-            if((tcp_R_Data[6]-settingdata3x)>90){
+            if((tcp_R_Data[6])>179){
               config1.data.datasets[2].data.push(90);
             }
             else if((tcp_R_Data[6]-settingdata3x)<-90){
@@ -387,7 +391,7 @@ console.log(recieveArray);
            }
 
            //4
-           if((tcp_R_Data[9]-settingdata4x)>90){
+           if((tcp_R_Data[9])>179){
              config1.data.datasets[3].data.push(90);
            }
            else if((tcp_R_Data[9]-settingdata4x)<-90){
@@ -397,7 +401,7 @@ console.log(recieveArray);
             config1.data.datasets[3].data.push(tcp_R_Data[9]-settingdata4x);
           }
           //5
-          if((tcp_R_Data[12]-settingdata5x)>90){
+          if((tcp_R_Data[12])>179){
             config1.data.datasets[4].data.push(90);
           }
           else if((tcp_R_Data[12]-settingdata5x)<-90){
@@ -409,7 +413,7 @@ console.log(recieveArray);
 
             }
             else{
-              if((tcp_R_Data[0]-settingdata1x)>90){
+              if((tcp_R_Data[0])>179){
                 config1.data.datasets[0].data.push(90);
               }
               else if((tcp_R_Data[0]-settingdata1x)<-90){
@@ -419,7 +423,7 @@ console.log(recieveArray);
                config1.data.datasets[0].data.push(tcp_R_Data[0]-settingdata1x);
              }
              //2
-             if((tcp_R_Data[3]-settingdata2x)>90){
+             if((tcp_R_Data[3])>179){
                config1.data.datasets[1].data.push(90);
              }
              else if((tcp_R_Data[3]-settingdata2x)<-90){
@@ -430,7 +434,7 @@ console.log(recieveArray);
             }
 
             //3
-            if((tcp_R_Data[6]-settingdata3x)>90){
+            if((tcp_R_Data[6])>179){
               config1.data.datasets[2].data.push(90);
             }
             else if((tcp_R_Data[6]-settingdata3x)<-90){
@@ -441,7 +445,7 @@ console.log(recieveArray);
            }
 
            //4
-           if((tcp_R_Data[9]-settingdata4x)>90){
+           if((tcp_R_Data[9])>179){
              config1.data.datasets[3].data.push(90);
            }
            else if((tcp_R_Data[9]-settingdata4x)<-90){
@@ -451,7 +455,7 @@ console.log(recieveArray);
             config1.data.datasets[3].data.push(tcp_R_Data[9]-settingdata4x);
           }
           //5
-          if((tcp_R_Data[12]-settingdata5x)>90){
+          if((tcp_R_Data[12])>179){
             config1.data.datasets[4].data.push(90);
           }
           else if((tcp_R_Data[12]-settingdata5x)<-90){
@@ -481,7 +485,7 @@ console.log(recieveArray);
                     config2.data.datasets[3].data.shift(0,20);
                     config2.data.datasets[4].data.shift(0,20);
                     //1
-                    if((tcp_R_Data[1]-settingdata1y)>90){
+                    if((tcp_R_Data[1])>179){
                       config2.data.datasets[0].data.push(90);
                     }
                     else if((tcp_R_Data[1]-settingdata1y)<-90){
@@ -491,7 +495,7 @@ console.log(recieveArray);
                      config2.data.datasets[0].data.push(tcp_R_Data[1]-settingdata1y);
                    }
                    //2
-                   if((tcp_R_Data[4]-settingdata2y)>90){
+                   if((tcp_R_Data[4])>179){
                      config2.data.datasets[1].data.push(90);
                    }
                    else if((tcp_R_Data[4]-settingdata2y)<-90){
@@ -501,7 +505,7 @@ console.log(recieveArray);
                     config2.data.datasets[1].data.push(tcp_R_Data[4]-settingdata2y);
                   }
                   //3
-                  if((tcp_R_Data[7]-settingdata3y)>90){
+                  if((tcp_R_Data[7])>179){
                     config2.data.datasets[2].data.push(90);
                   }
                   else if((tcp_R_Data[7]-settingdata3y)<-90){
@@ -511,7 +515,7 @@ console.log(recieveArray);
                    config2.data.datasets[2].data.push(tcp_R_Data[7]-settingdata3y);
                  }
                  //4
-                 if((tcp_R_Data[10]-settingdata4y)>90){
+                 if((tcp_R_Data[10])>179){
                    config2.data.datasets[3].data.push(90);
                  }
                  else if((tcp_R_Data[10]-settingdata4y)<-90){
@@ -521,7 +525,7 @@ console.log(recieveArray);
                   config2.data.datasets[3].data.push(tcp_R_Data[10]-settingdata4y);
                 }
                 //5
-                if((tcp_R_Data[13]-settingdata5y)>90){
+                if((tcp_R_Data[13])>179){
                   config2.data.datasets[4].data.push(90);
                 }
                 else if((tcp_R_Data[13]-settingdata5y)<-90){
@@ -535,7 +539,7 @@ console.log(recieveArray);
                   }
                   else{
                     //1
-                    if((tcp_R_Data[1]-settingdata1y)>90){
+                    if((tcp_R_Data[1])>179){
                       config2.data.datasets[0].data.push(90);
                     }
                     else if((tcp_R_Data[1]-settingdata1y)<-90){
@@ -545,7 +549,7 @@ console.log(recieveArray);
                      config2.data.datasets[0].data.push(tcp_R_Data[1]-settingdata1y);
                    }
                    //2
-                   if((tcp_R_Data[4]-settingdata2y)>90){
+                   if((tcp_R_Data[4])>179){
                      config2.data.datasets[1].data.push(90);
                    }
                    else if((tcp_R_Data[4]-settingdata2y)<-90){
@@ -555,7 +559,7 @@ console.log(recieveArray);
                     config2.data.datasets[1].data.push(tcp_R_Data[4]-settingdata2y);
                   }
                   //3
-                  if((tcp_R_Data[7]-settingdata3y)>90){
+                  if((tcp_R_Data[7])>179){
                     config2.data.datasets[2].data.push(90);
                   }
                   else if((tcp_R_Data[7]-settingdata3y)<-90){
@@ -565,7 +569,7 @@ console.log(recieveArray);
                    config2.data.datasets[2].data.push(tcp_R_Data[7]-settingdata3y);
                  }
                  //4
-                 if((tcp_R_Data[10]-settingdata4y)>90){
+                 if((tcp_R_Data[10])>179){
                    config2.data.datasets[3].data.push(90);
                  }
                  else if((tcp_R_Data[10]-settingdata4y)<-90){
@@ -575,7 +579,7 @@ console.log(recieveArray);
                   config2.data.datasets[3].data.push(tcp_R_Data[10]-settingdata4y);
                 }
                 //5
-                if((tcp_R_Data[13]-settingdata5y)>90){
+                if((tcp_R_Data[13])>179){
                   config2.data.datasets[4].data.push(90);
                 }
                 else if((tcp_R_Data[13]-settingdata5y)<-90){

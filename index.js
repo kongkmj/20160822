@@ -48,10 +48,12 @@ var tcprule001x,tcprule002x,tcprule003x,tcprule004x,tcprule005x;
 var tcprule001y,tcprule002y,tcprule003y,tcprule004y,tcprule005y;
 var tcprange001,tcprange002,tcprange003,tcprange004,tcprange005;
 var datacount;
+var conn=0;
 
 var server = net.createServer(function (socket) {
 
   console.log('Client connection: ');
+  conn+=1;
   console.log('   local = %s:%s',socket.localAddress,socket.localPort); //로컬 포트
   console.log('   remote= %s:%s',socket.remoteAddress,socket.remotePort); //원격 포트
   socket.setEncoding('utf8');
@@ -99,6 +101,11 @@ var server = net.createServer(function (socket) {
     tcp_R_Data[14] =parseInt(recieveArray[14]); //민감도5
     //주기
     tcp_R_Data[15] =parseInt(recieveArray[15]);
+
+
+
+
+
 
     for(var cnt=0;cnt<tcp_R_Data.length;cnt++){
       if(tcp_R_Data[cnt]>180){
@@ -360,17 +367,19 @@ var notiarr=[noti001,noti002,noti003,noti004,noti005];
     sendData[12]=rule_003.range003;
     sendData[13]=rule_004.range004;
     sendData[14]=rule_005.range005;
-
+    
     for(var d=0;d<15;d++){
     if(sendData[d].length==1){
       sendData[d]="00"+sendData[d];
-    }
+    }    
+
     else if(sendData[d].length==2){
       sendData[d]="0"+sendData[d];
     }
     else if(sendData[d].length==3){
       sendData[d]=sendData[d];
     }
+    
     }
     var tcpsendData="a"+sendData[0]+"x"+sendData[5]+"x"+sendData[10]+"x"+
                     sendData[1]+"x"+sendData[6]+"x"+sendData[11]+"x"+
@@ -380,7 +389,8 @@ var notiarr=[noti001,noti002,noti003,noti004,noti005];
                     intervalmessage+"b";
    writeData(socket2,tcpsendData);
   }
-    io.emit('chat message',tcp_R_Data,alaram,recieveArray);
+
+    io.emit('chat message',tcp_R_Data,alaram,recieveArray,conn);
 
     if(std1==1){
       rule001.find({}).sort('-createdAt').exec(function (err, r001) {
@@ -467,31 +477,31 @@ rule001.find({}).sort('-createdAt').exec(function (err, r001) {
 
       rule_001=r001[0];
       if(rule_001===undefined){
-      rule_001={rule001x:"10",rule001y:"10",range001:"10"};
+      rule_001={rule001x:"90",rule001y:"90",range001:"90"};
       }
       rule002.find({}).sort('-createdAt').exec(function (err, r002) {
 
           rule_002=r002[0];
           if(rule_002===undefined){
-          rule_002={rule002x:"10",rule002y:"10",range002:"10"};
+          rule_002={rule002x:"90",rule002y:"90",range002:"90"};
           }
           rule003.find({}).sort('-createdAt').exec(function (err, r003) {
 
               rule_003=r003[0];
               if(rule_003===undefined){
-              rule_003={rule003x:"10",rule003y:"10",range003:"10"};
+              rule_003={rule003x:"90",rule003y:"90",range003:"90"};
               }
               rule004.find({}).sort('-createdAt').exec(function (err, r004) {
 
                   rule_004=r004[0];
                   if(rule_004===undefined){
-                  rule_004={rule004x:"10",rule004y:"10",range004:"10"};
+                  rule_004={rule004x:"90",rule004y:"90",range004:"90"};
                   }
                   rule005.find({}).sort('-createdAt').exec(function (err, r005) {
 
                       rule_005=r005[0];
                       if(rule_005===undefined){
-                      rule_005={rule005x:"10",rule005y:"10",range005:"10"};
+                      rule_005={rule005x:"90",rule005y:"90",range005:"90"};
                       }
                 });
             });
@@ -660,19 +670,19 @@ app.get('/input',function (req,res) {
                               rule_005=r005[0];
 
                               if(rule_001===undefined){
-                                rule_001={rule001x:"10",rule001y:"10",range001:"10"};
+                                rule_001={rule001x:"90",rule001y:"90",range001:"90"};
                               }
                               if(rule_002===undefined){
-                                rule_002={rule002x:"10",rule002y:"10",range002:"10"};
+                                rule_002={rule002x:"90",rule002y:"90",range002:"90"};
                               }
                               if(rule_003===undefined){
-                                rule_003={rule003x:"10",rule003y:"10",range003:"10"};
+                                rule_003={rule003x:"90",rule003y:"90",range003:"90"};
                               }
                               if(rule_004===undefined){
-                                rule_004={rule004x:"10",rule004y:"10",range004:"10"};
+                                rule_004={rule004x:"90",rule004y:"90",range004:"90"};
                               }
                               if(rule_005===undefined){
-                                rule_005={rule005x:"10",rule005y:"10",range005:"10"};
+                                rule_005={rule005x:"90",rule005y:"90",range005:"90"};
                               }
 
                               sendData[0]=rule_001.rule001x;
@@ -779,6 +789,7 @@ io.on('connection',function (socketio) {
     sendData[12]=rule_003.range003;
     sendData[13]=rule_004.range004;
     sendData[14]=rule_005.range005;
+
 for(var i=0;i<15;i++){
 if(sendData[i].length==1){
   sendData[i]="00"+sendData[i];
@@ -790,6 +801,7 @@ else if(sendData[i].length==3){
   sendData[i]=sendData[i];
 }
 }
+
     var tcpsendData="a"+sendData[0]+"x"+sendData[5]+"x"+sendData[10]+"x"+
                     sendData[1]+"x"+sendData[6]+"x"+sendData[11]+"x"+
                     sendData[2]+"x"+sendData[7]+"x"+sendData[12]+"x"+
@@ -1228,13 +1240,8 @@ beaconData.find({}).limit(20).sort({$natural:-1}).exec(function (err,rcdata) {
 
 
 //################# 그래프 page mapping EMD #####################
-
-
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@ mapping 관련 END @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-
 http.listen(80,function(){
     console.log('listening at 80');
 
 });
+
